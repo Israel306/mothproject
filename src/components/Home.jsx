@@ -18,7 +18,7 @@ export default function Home() {
           <CardDetails />
         </div>
         <p className="mt-10 font-bold">Quick Actions</p>
-        <div className="mt-5 grid grid-cols-2 gap-10 w-full">
+        <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-10 w-full">
           {/* Send Action */}
           <div className="bg-[#C1E8EB] p-6 flex flex-row gap-5 items-center rounded-2xl border">
             <img className="h-14 w-14" src={send} alt="send icon" />

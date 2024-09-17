@@ -17,7 +17,7 @@ export default function Cards() {
           <h1 className="flex items-center justify-center ">
             Create your instant credit & debit cards
           </h1>
-          <div className="flex flex-row items-center gap-5 w-full mt-10">
+          <div className="flex flex-col md:flex-row items-center gap-5 w-full mt-10">
             <div className="flex flex-row items-center gap-5 w-full">
               <div className="flex items-center justify-center rounded-full bg-[#C1E8EB] h-10 w-10">
                 <GiSwipeCard className="h-6 w-6" />
