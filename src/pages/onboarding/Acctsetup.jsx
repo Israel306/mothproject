@@ -1,4 +1,5 @@
 import React from "react";
+import logo from "/src/assets/logo.svg";
 import SliderHero from "../../components/SliderHero";
 import ProgressBar from "../../components/ProgressBar";
 import { Link, useNavigate } from "react-router-dom"; // Added Link and useNavigate from react-router-dom
@@ -44,6 +45,7 @@ export default function Acctsetup() {
 
       {/* Account Setup Section */}
       <div className="md:w-[50%] h-[100vh] overflow-y-auto bg-white">
+        <img className="block md:hidden mb-5 p-5" src={logo} alt="" />
         <div className="flex items-center justify-center">
           <div className="flex flex-col w-full p-5 md:p-20">
             <div>

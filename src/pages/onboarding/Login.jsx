@@ -2,6 +2,7 @@ import React from "react";
 import ScrollToTop from "../../components/ScrollToTop";
 import SliderHero from "../../components/SliderHero";
 import { Link } from "react-router-dom";
+import logo from "/src/assets/logo.svg";
 
 export default function Login() {
   return (
@@ -15,6 +16,7 @@ export default function Login() {
 
         {/* Login Form Section */}
         <div className="md:w-[50%] bg-white">
+          <img className="block md:hidden mb-5 p-5" src={logo} alt="" />
           <div className="flex items-center justify-center md:mt-28">
             <div className="flex flex-col w-full p-5 md:p-20">
               <h1 className="text-black mb-5">Login</h1>

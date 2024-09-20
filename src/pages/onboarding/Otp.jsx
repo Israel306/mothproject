@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import SliderHero from "../../components/SliderHero";
 import ProgressBar from "../../components/ProgressBar";
 import { Link } from "react-router-dom";
+import logo from "/src/assets/logo.svg";
 
 export default function Otp() {
   const inputRefs = useRef([]);
@@ -31,6 +32,7 @@ export default function Otp() {
 
         {/* OTP Verification Section */}
         <div className="md:w-[50%] bg-white p-5 md:p-20">
+          <img className="block md:hidden mb-5 " src={logo} alt="" />
           <div className="flex items-center justify-center mb-10">
             <div className="flex flex-col w-full">
               <h1 className="text-black mb-5">Verify your email</h1>
