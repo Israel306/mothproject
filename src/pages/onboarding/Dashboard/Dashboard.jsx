@@ -12,6 +12,7 @@ import Cards from "../../../components/Cards";
 import { FiMenu, FiX } from "react-icons/fi";
 import notification from "/src/assets/notification.svg";
 import atm from "/src/assets/atm.png";
+import bgimg from "/src/assets/bgimg.png";
 import mothcoin from "/src/assets/mothcoin.png";
 import googleplay from "/src/assets/googleplay.svg";
 import appstore from "/src/assets/appstore.svg";

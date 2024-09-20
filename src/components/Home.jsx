@@ -8,14 +8,22 @@ import withdraw from "/src/assets/withdraw.svg";
 import debit from "/src/assets/debit.svg";
 import credit from "/src/assets/credit.svg";
 import TransactionItem from "./TransactionItem";
+import bgimg from "/src/assets/bgimg.png";
 
 export default function Home() {
   return (
     <>
       <div className="flex flex-col items-start">
         <h1>Welcome back, Matt👋🏻</h1>
-        <div className="bg-black w-full mt-10 rounded-lg">
-          <CardDetails />
+        <div className="relative  md:pt-5 pt-5">
+          <img
+            src={bgimg}
+            className="md:h-[200px] h-[170px] md:w-screen"
+            alt="Background"
+          />
+          <div className="absolute inset-0 pt-5">
+            <CardDetails />
+          </div>
         </div>
         <p className="mt-10 font-bold">Quick Actions</p>
         <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-10 w-full">
