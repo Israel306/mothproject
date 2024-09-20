@@ -4,6 +4,7 @@ import ProgressBar from "../../components/ProgressBar";
 import { Link, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import Flag from "react-world-flags";
+import logo from "/src/assets/logo.svg";
 
 // Example country data, replace with actual data if necessary
 const countries = [
@@ -41,6 +42,7 @@ export default function Signup() {
 
         {/* Signup Form Section */}
         <div className="md:w-[50%] ml-auto h-[100vh] overflow-y-auto bg-white">
+          <img className="block md:hidden mb-5 p-5" src={logo} alt="" />
           <div className="flex items-center justify-center">
             <div className="flex flex-col w-full p-5 md:p-20">
               <h1 className="text-black mb-5">Sign up</h1>
