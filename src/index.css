@@ -39,6 +39,47 @@ p {
   margin: 0 auto;
 }
 
+.custom-dots {
+  position: absolute;
+  bottom: -100px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-align: center;
+}
+
+.custom-dots li {
+  display: inline-block;
+  margin: 0 10px;
+  padding: 0;
+}
+
+.custom-dots li button {
+  font-size: 0;
+  line-height: 0;
+  display: block;
+  width: 30px;
+  height: 5px;
+
+  cursor: pointer;
+  padding: 5px;
+  border: none;
+  outline: none;
+}
+
+.custom-dots li button::before {
+  content: "";
+  display: block;
+  width: 30px;
+  height: 5px;
+  background-color: #ffff;
+}
+
+.custom-dots li.slick-active button::before {
+  background-color: #007aff;
+}
+
 @media (min-width: 200px) and (max-width: 768px) {
   h1 {
     font-size: 20px;

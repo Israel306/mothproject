@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 export default function Otp() {
   const inputRefs = useRef([]);
 
+  // Handle input change to focus the next input
   const handleInputChange = (e, index) => {
     const { value } = e.target;
     if (value.length >= 1 && index < inputRefs.current.length - 1) {
@@ -13,6 +14,7 @@ export default function Otp() {
     }
   };
 
+  // Handle key down to navigate back on Backspace
   const handleKeyDown = (e, index) => {
     if (e.key === "Backspace" && index > 0 && !e.target.value) {
       inputRefs.current[index - 1].focus();
@@ -22,24 +24,24 @@ export default function Otp() {
   return (
     <>
       <div className="flex flex-col md:flex-row">
-        <div className="md:w-[50%]">
+        {/* Slider Component for larger screens */}
+        <div className="md:w-[50%] hidden md:block">
           <SliderHero />
         </div>
+
+        {/* OTP Verification Section */}
         <div className="md:w-[50%] bg-white p-5 md:p-20">
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center mb-10">
             <div className="flex flex-col w-full">
-              <div>
-                <h1 className="text-black mb-5">Verify your email</h1>
-                <p className="text-black">
-                  Please enter the OTP sent to your email
-                </p>
-              </div>
-              <div className="mb-10">
-                <ProgressBar step={2} />
-              </div>
+              <h1 className="text-black mb-5">Verify your email</h1>
+              <p className="text-black">
+                Please enter the OTP sent to your email
+              </p>
+              <ProgressBar step={2} />
             </div>
           </div>
 
+          {/* OTP Input Fields */}
           <div className="flex justify-center mb-[200px]">
             <div className="flex space-x-2">
               {[...Array(6)].map((_, index) => (
@@ -56,6 +58,7 @@ export default function Otp() {
             </div>
           </div>
 
+          {/* Buttons for account verification and resend code */}
           <div className="mb-5">
             <Link to="/acctsetup">
               <button
@@ -69,7 +72,7 @@ export default function Otp() {
 
           <div>
             <button
-              type="submit"
+              type="button"
               className="text-black font-medium py-3 px-4 border border-[#000000] shadow-md w-full rounded-xl"
             >
               Resend Code

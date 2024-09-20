@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import logo from "/src/assets/logo.svg";
 import home from "/src/assets/home.svg";
 import card from "/src/assets/card.svg";
@@ -8,7 +9,6 @@ import logout from "/src/assets/logout.svg";
 import Home from "../../../components/Home";
 import Notification from "../../../components/Notification";
 import Cards from "../../../components/Cards";
-
 import { FiMenu, FiX } from "react-icons/fi";
 import notification from "/src/assets/notification.svg";
 import atm from "/src/assets/atm.png";
@@ -98,7 +98,9 @@ function Dashboard() {
         {/* Logout */}
         <div className="mt-auto flex items-center gap-4 text-white cursor-pointer">
           <img className="h-6 w-6" src={logout} alt="logout" />
-          <p>Log Out</p>
+          <Link to="/">
+            <p>Log Out</p>
+          </Link>
         </div>
       </div>
 

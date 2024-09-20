@@ -1,10 +1,8 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import onboarding1 from "../assets/onboarding1.png";
-import oneboarding2 from "../assets/oneboarding2.png";
-import onboarding3 from "../assets/onboarding3.png";
-import mothlogo from "../assets/mothlogo.png";
+import cards from "/src/assets/cards.svg";
+import logo from "/src/assets/logo.svg"; // Update the path as necessary
 
 function SliderHero() {
   const settings = {
@@ -14,47 +12,37 @@ function SliderHero() {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
-    dotsClass: "slick-dots custom-dots ",
+    dots: true,
+    dotsClass: "slick-dots custom-dots",
+    // customPaging: (i) => <div className="custom-dot" />,
   };
 
   return (
-    <div className="container-slide bg-black md:h-[2000px] h-auto overflow-hidden">
+    <div className="bg-black h-screen relative">
+      <img src={logo} alt="Logo" className="absolute top-5 left-5 z-10 w-16" />
       <Slider {...settings}>
-        <div className="flex flex-col justify-center items-center h-screen relative outline-none bg-black ">
-          <div className="flex justify-start py-5 px-2 ">
-            <img src={mothlogo}></img>
-          </div>
-          <div className="flex flex-col justify-center items-center">
-            <img
-              src={onboarding1}
-              alt="Slide 1"
-              className="w-[100%] m-5 object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
-            />
-          </div>
-        </div>
-
-        <div className="relative outline-none">
-          <div className="flex justify-start py-5 px-2 ">
-            <img src={mothlogo}></img>
-          </div>
-          <img
-            src={oneboarding2}
-            alt="Slide 2"
-            className="w-[100%]  object-cover"
+        <div>
+          <SlideContent
+            image={cards}
+            title1="Banking made"
+            title2="simple for you."
+            content="All your banking needs in one place, accessible anywhere and anytime"
           />
         </div>
-        <div className="relative outline-none">
-          <div className="flex justify-start py-5 px-2 ">
-            <img src={mothlogo}></img>
-          </div>
-          <img
-            src={onboarding3}
-            alt="Slide 3"
-            className="w-[100%]  object-cover"
+        <div>
+          <SlideContent
+            image={cards}
+            title1="Card Payments"
+            title2="made seamless."
+            content="Create cards for seamless local and international transactions"
+          />
+        </div>
+        <div>
+          <SlideContent
+            image={cards}
+            title1="Withdrawal made"
+            title2="simple for you."
+            content="Get on-demand access to ATM cash withdrawals"
           />
         </div>
       </Slider>
@@ -62,22 +50,17 @@ function SliderHero() {
   );
 }
 
-export default SliderHero;
-
 function SlideContent({ title1, title2, content, image }) {
   return (
-    <div className="absolute bottom-0 w-full flex flex-col items-center text-center">
-      <div className=" w-full py-5">
-        <h1 className="text-[25px] md:text-[40px] font-bold text-white">
-          {title1}
-        </h1>
-        {title2 && (
-          <h1 className="text-[25px] md:text-[40px] font-bold text-white">
-            {title2}
-          </h1>
-        )}
-        <p className="w-[80%] md:w-[58%] text-[#48484A] mx-auto">{content}</p>
-      </div>
+    <div className="text-white text-center px-10 w-full h-full flex flex-col justify-center items-center">
+      <img src={image} alt="" className="w-auto h-1/4 mb-4" />
+      <h1 className="text-[25px] md:text-[40px] font-bold">{title1}</h1>
+      <h1 className="text-[25px] md:text-[40px] font-bold mt-2">{title2}</h1>
+      <p className="mt-5 w-full md:w-[58%] text-[#48484A] leading-relaxed">
+        {content}
+      </p>
     </div>
   );
 }
+
+export default SliderHero;
