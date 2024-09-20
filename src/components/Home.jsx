@@ -18,7 +18,7 @@ export default function Home() {
         <div className="relative  md:pt-5 pt-5">
           <img
             src={bgimg3}
-            className="md:h-[200px] h-[170px] md:w-screen"
+            className="md:h-[200px] h-[170px] md:w-screen rounded-2xl"
             alt="Background"
           />
           <div className="absolute inset-0 pt-5">
