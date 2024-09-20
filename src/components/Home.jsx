@@ -8,7 +8,7 @@ import withdraw from "/src/assets/withdraw.svg";
 import debit from "/src/assets/debit.svg";
 import credit from "/src/assets/credit.svg";
 import TransactionItem from "./TransactionItem";
-import bgimg from "/src/assets/bgimg.png";
+import bgimg3 from "/src/assets/bgimg3.png";
 
 export default function Home() {
   return (
@@ -17,7 +17,7 @@ export default function Home() {
         <h1>Welcome back, Matt👋🏻</h1>
         <div className="relative  md:pt-5 pt-5">
           <img
-            src={bgimg}
+            src={bgimg3}
             className="md:h-[200px] h-[170px] md:w-screen"
             alt="Background"
           />
