@@ -296,7 +296,7 @@ export default function Home() {
             {step === 2 && (
               <>
                 <div className=" text-black  w-full md:p-8 p-3 ">
-                  <h1 className=" text-black text-center text-2xl font-bold mb-4">
+                  <h1 className=" text-black text-center text-2xl font-bold mb-6">
                     Confirm Transaction
                   </h1>
 
@@ -351,7 +351,7 @@ export default function Home() {
 
             {step === 3 && (
               <>
-                <h2 className="text-center text-2xl font-bold mb-4">
+                <h2 className="text-center text-2xl font-bold mb-6">
                   Enter Pin
                 </h2>
                 {/* Step 3 fields */}
@@ -388,7 +388,7 @@ export default function Home() {
             {step === 4 && (
               <>
                 <div className=" text-black  w-full md:p-8 p-3 ">
-                  <h1 className=" text-black text-center text-2xl font-bold mb-4">
+                  <h1 className=" text-black text-center text-2xl font-bold mb-6">
                     Transaction Successful
                   </h1>
 
