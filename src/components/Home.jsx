@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import CardDetails from "./CardDetails";
 import send from "/src/assets/send.svg";
 import request from "/src/assets/request.svg";
-import swap from "/src/assets/swap.svg";
+import newswap from "/src/assets/newswap.png";
 import withdraw from "/src/assets/withdraw.svg";
 import debit from "/src/assets/debit.svg";
 import credit from "/src/assets/credit.svg";
@@ -12,12 +12,16 @@ import bgimg3 from "/src/assets/bgimg3.png";
 import BankSelect from "./BankSelect";
 import transactionsuccess from "/src/assets/transactionsuccess.png";
 import copy from "/src/assets/copy.svg";
+import FlagSelector from "./FlagSelector";
 
 export default function Home() {
   const [isSendModalOpen, setIsSendModalOpen] = useState(false);
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
   const [isSwapModalOpen, setIsSwapModalOpen] = useState(false);
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
+  const [ngnAmount, setNgnAmount] = useState("");
+  const [convertedAmount, setConvertedAmount] = useState(0);
+  const [selectedCurrency, setSelectedCurrency] = useState("USD"); // Default to USD
   const [step, setStep] = useState(1); // Step 1 represents the Send Money form
   const navigate = useNavigate();
 
@@ -74,6 +78,10 @@ export default function Home() {
     setStep(4); // Proceed to the Review & Confirm step
   };
 
+  const swap = () => {
+    setStep(2); // Proceed to the Review & Confirm step
+  };
+
   const handleGenerateReceipt = () => {
     // After generating the receipt, navigate back to the home page
     setIsSendModalOpen(false);
@@ -95,6 +103,39 @@ export default function Home() {
       inputRefs.current[index - 1].focus();
     }
   };
+
+  const handleConvert = (e) => {
+    const value = parseFloat(e.target.value); // Parse value as float
+    setNgnAmount(value);
+
+    if (!isNaN(value)) {
+      // Convert NGN to the selected currency
+      const convertedValue = (value / exchangeRates[selectedCurrency]).toFixed(
+        2
+      );
+      setConvertedAmount(convertedValue);
+    } else {
+      setConvertedAmount(0); // Reset if the input is not a number
+    }
+  };
+
+  const exchangeRates = {
+    USD: 1600, // ₦1600 = $1.00
+    EUR: 900, // Example: ₦900 = €1.00
+    GBP: 1000, // Example: ₦1000 = £1.00
+    CAD: 600, // Example: ₦600 = C$1.00
+    // Add more currencies as needed
+  };
+
+  // Define the flags or country codes for each currency
+  const flags = {
+    USD: "🇺🇸",
+    EUR: "🇪🇺",
+    GBP: "🇬🇧",
+    CAD: "🇨🇦",
+    // Add flags for other currencies as needed
+  };
+
   return (
     <>
       {/* Blur background if the modal is open */}
@@ -145,7 +186,7 @@ export default function Home() {
             className="bg-[#EEDDFC] p-6 flex flex-row gap-5 items-center rounded-2xl border cursor-pointer"
             onClick={openSwapModal} // Open the modal when clicked
           >
-            <img className="h-14 w-14" src={swap} alt="swap icon" />
+            <img className="h-14 w-14" src={newswap} alt="swap icon" />
             <div className="flex flex-col">
               <p className="font-bold">Swap</p>
               <p className="mt-2">
@@ -493,6 +534,107 @@ export default function Home() {
       {isSwapModalOpen && (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 md:p-10 rounded-2xl shadow-lg relative w-full max-w-md md:w-1/3 lg:max-w-lg xl:max-w-xl mx-4">
+            {step === 1 && (
+              <>
+                <div className="p-10  rounded-md max-w-md mx-auto">
+                  <div>
+                    <h1 className="text-black mb-10 text-center">
+                      Convert NGN
+                    </h1>
+
+                    <div className="mb-5 text-center">
+                      <p className="text-black">Wallet Balance $50,344.00</p>
+                    </div>
+                  </div>
+
+                  {/* From Currency */}
+                  <div className="flex justify-center items-center mb-5">
+                    <span>{flags["NGN"] || "🇳🇬"}</span>{" "}
+                    {/* Display NGN flag or default to Nigerian flag */}
+                  </div>
+
+                  {/* Input field to enter NGN amount */}
+                  <div className="text-center mb-5">
+                    <p className="text-black mb-2 text-sm">
+                      Enter Amount in NGN
+                    </p>
+                    <input
+                      type="number"
+                      value={ngnAmount}
+                      onChange={handleConvert}
+                      placeholder="Enter NGN amount"
+                      className="p-2 border rounded-xl text-center w-2/3"
+                    />
+                  </div>
+
+                  <div className="text-black mb-5 text-center text-sm">
+                    {/* Display dynamic exchange rate based on selected currency */}
+                    Exchange Rate ₦
+                    {exchangeRates[selectedCurrency].toLocaleString()} ={" "}
+                    {selectedCurrency}
+                  </div>
+
+                  {/* To Currency Selector */}
+                  <div className="text-center mb-5">
+                    <p className="text-black mb-5">To</p>
+                    <select
+                      className="p-2 border rounded-md"
+                      value={selectedCurrency}
+                      onChange={(e) => setSelectedCurrency(e.target.value)}
+                    >
+                      {Object.keys(exchangeRates).map((currency) => (
+                        <option key={currency} value={currency}>
+                          {flags[currency]} {currency}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Display converted amount */}
+                  <div className="text-center">
+                    <h2 className="text-black mb-2 text-sm">
+                      Converted Amount
+                    </h2>
+                    <p className="text-lg font-semibold text-black">
+                      {flags[selectedCurrency]} {convertedAmount}{" "}
+                      {selectedCurrency}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className="bg-black text-white font-medium py-3 px-4 shadow-md w-full rounded-xl mt-5"
+                  onClick={swap}
+                >
+                  Next
+                </button>
+              </>
+            )}
+
+            {step === 2 && (
+              <>
+                <h2 className="text-center text-2xl font-bold mb-4">
+                  Successful
+                </h2>
+                {/* Step 2 fields */}
+                <p className="text-center mb-10">
+                  You converted ₦1600 to $1.00{" "}
+                </p>
+                {/* Add review details or summary here */}
+
+                <div className="flex justify-center mb-[100px]">
+                  <img src={transactionsuccess}></img>
+                </div>
+                <button
+                  type="button"
+                  className="bg-black text-white font-medium py-3 px-4 shadow-md w-full rounded-xl mt-5"
+                  onClick={handleGenerateReceipt}
+                >
+                  Done
+                </button>
+              </>
+            )}
+
             <button
               onClick={closeSwapModal}
               className="absolute top-[-20px] md:right-[-35px] right-[-20px] bg-white border border-gray-300 rounded-full h-8 w-8 flex justify-center items-center"
