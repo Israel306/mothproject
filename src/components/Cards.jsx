@@ -118,7 +118,7 @@ export default function Cards() {
 
         {/* Only render this section if showDashboard is false */}
         {!showDashboard && (
-          <div className="bg-white rounded-xl md:p-10 flex flex-col w-full shadow-lg">
+          <div className="bg-white rounded-xl md:p-10  p-5 flex flex-col w-full shadow-lg">
             <div className="flex items-center justify-center">
               <img src={cards} alt="Cards" />
             </div>
