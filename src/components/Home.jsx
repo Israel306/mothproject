@@ -224,9 +224,9 @@ export default function Home() {
         </div>
         <div className="mt-10 rounded-lg border bg-white p-4 w-full">
           <div className="flex flex-row items-center justify-between">
-            <p>Recent Transactions</p>
+            <p className="text-sm">Recent Transactions</p>
             <Link to="/dashboard" state={{ activeMenu: "History" }}>
-              <p>View All</p>
+              <p className="text-sm">View All</p>
             </Link>
           </div>
           {/* Transactions */}
