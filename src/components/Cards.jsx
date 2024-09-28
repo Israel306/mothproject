@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import cards from "/src/assets/cards.svg";
 import newcard from "/src/assets/newcard.svg";
 import cardwithdraw from "/src/assets/cardwithdraw.svg";
@@ -14,23 +14,75 @@ import credit from "/src/assets/credit.svg";
 
 const CardDashboard = ({ selectedCountry }) => {
   const [isBalanceVisible, setIsBalanceVisible] = useState(true);
+  const [activeSelector, setActiveSelector] = useState("Moth Virtual Card");
+  const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
+
   const balance = 500.0; // Example balance
 
   const toggleBalanceVisibility = () => {
     setIsBalanceVisible(!isBalanceVisible);
   };
 
+  const openWithdrawModal = () => {
+    setIsWithdrawModalOpen(true);
+  };
+
+  const closeWithdrawModal = () => {
+    setIsWithdrawModalOpen(false);
+  };
+
   return (
-    <div className="rounded-xl md:p-10  flex flex-col w-full">
-      <img src={newcard} className="mb-5" alt="New Card" />
+    <div className="rounded-xl md:p-10 flex flex-col w-full">
+      {/* Cards Header Section */}
+      <div className="flex justify-between md:gap-0 gap-2 items-center w-full mb-5">
+        <h1>Cards</h1>
+        <div className="flex justify-end bg-[#767680] py-1 px-2 rounded-xl">
+          <div className="flex md:space-x-4">
+            {/* Selector Buttons */}
+            <button
+              className={`px-4 py-2  rounded-xl ${
+                activeSelector === "Moth Virtual Card"
+                  ? "bg-white"
+                  : "bg-[#767680] text-white"
+              }`}
+              onClick={() => setActiveSelector("Moth Virtual Card")}
+            >
+              Moth Virtual Card
+            </button>
+            <button
+              className={`px-4 py-2 rounded-xl ${
+                activeSelector === "Debit/Credit Card"
+                  ? "bg-white"
+                  : "bg-[#767680] text-white"
+              }`}
+              onClick={() => setActiveSelector("Debit/Credit Card")}
+            >
+              Debit/Credit Card
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="border-[1px] border-[#E1E1E1] "></div>
+
+      {/* Card Image */}
+      <img src={newcard} className="mb-5 mt-5" alt="New Card" />
+
+      {/* Show Card Details Button */}
       <p className="flex items-center justify-center mb-5">Show Card Details</p>
+
+      {/* Card Balance Section */}
       <div className="flex flex-col justify-center bg-white drop-shadow-lg p-5 rounded-xl">
         <div className="flex justify-between">
-          <img src={cardwithdraw} alt="Card Withdraw" />
+          <img
+            src={cardwithdraw}
+            alt="Card Withdraw"
+            onClick={openWithdrawModal}
+          />
           <img src={cardtopup} alt="Card Top Up" />
         </div>
         <p className="text-center text-sm mb-4">Current Balance</p>
-        <div className="flex  justify-center items-center gap-3">
+        <div className="flex justify-center items-center gap-3">
           <h1>{isBalanceVisible ? `$${balance.toFixed(2)}` : "*****"}</h1>
           <button
             onClick={toggleBalanceVisibility}
@@ -41,18 +93,19 @@ const CardDashboard = ({ selectedCountry }) => {
             ) : (
               <FaEye className="mr-2" />
             )}
-            {isBalanceVisible ? "" : ""}
           </button>
         </div>
       </div>
 
-      <div className="mt-10 rounded-lg  bg-white p-4 w-full drop-shadow-lg">
+      {/* Recent Transactions Section */}
+      <div className="mt-10 rounded-lg bg-white p-4 w-full drop-shadow-lg">
         <div className="flex flex-row items-center justify-between">
           <p className="text-sm">Recent Transactions</p>
           <Link to="/dashboard" state={{ activeMenu: "History" }}>
             <p className="text-sm">View All</p>
           </Link>
         </div>
+
         {/* Transactions */}
         <TransactionItem
           imgSrc={debit}
@@ -68,7 +121,6 @@ const CardDashboard = ({ selectedCountry }) => {
           amount="+9.99"
           amountColor="text-[#40BE3E]"
         />
-
         <TransactionItem
           imgSrc={credit}
           name="Funded Card"
@@ -77,11 +129,25 @@ const CardDashboard = ({ selectedCountry }) => {
           amountColor="text-[#40BE3E]"
         />
       </div>
+
+      {/* Withdraw Modal */}
+      {isWithdrawModalOpen && (
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 md:p-10 rounded-2xl shadow-lg relative w-full max-w-md md:w-1/3 lg:max-w-lg xl:max-w-xl mx-4">
+            <button
+              onClick={closeWithdrawModal}
+              className="absolute top-[-20px] md:right-[-35px] right-[-20px] bg-white border border-gray-300 rounded-full h-8 w-8 flex justify-center items-center"
+            >
+              <span className="text-black text-xl">×</span>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-export default function Cards() {
+const Cards = () => {
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState("");
   const [showDashboard, setShowDashboard] = useState(false);
@@ -103,7 +169,7 @@ export default function Cards() {
 
   const handleNextClick = () => {
     setIsCardModalOpen(false);
-    setShowDashboard(true); // Show dashboard when "Next" is clicked
+    setShowDashboard(true);
   };
 
   const handleCountryChange = (e) => {
@@ -113,12 +179,10 @@ export default function Cards() {
   return (
     <>
       <div className="flex flex-col w-full">
-        <h1>Cards</h1>
-        <div className="border-[1px] border-[#E1E1E1] mt-5"></div>
-
-        {/* Only render this section if showDashboard is false */}
         {!showDashboard && (
-          <div className="bg-white rounded-xl md:p-10  p-5 flex flex-col w-full shadow-lg">
+          <div className="bg-white rounded-xl md:p-10 p-5 flex flex-col w-full shadow-lg">
+            <h1>Cards</h1>
+            <div className="border-[1px] border-[#E1E1E1] mt-5"></div>
             <div className="flex items-center justify-center">
               <img src={cards} alt="Cards" />
             </div>
@@ -126,114 +190,110 @@ export default function Cards() {
               Create your instant credit & debit cards
             </h1>
             <div className="flex flex-col md:flex-row items-center gap-5 w-full mt-10">
-              <div className="flex flex-row items-center gap-5 w-full">
-                <div className="flex items-center justify-center rounded-full bg-[#C1E8EB] h-10 w-10">
+              <div className="flex items-center gap-5 w-full">
+                <div className="rounded-full bg-[#C1E8EB] h-10 w-10 flex justify-center items-center">
                   <GiSwipeCard className="h-6 w-6" />
                 </div>
-                <div className="flex flex-col ">
+                <div>
                   <p className="text-[#6C6C70] text-[13px]">
-                    Card Creation Free
+                    Card Creation Fee
                   </p>
                   <p className="font-bold">$2</p>
                 </div>
               </div>
-              <div className="flex flex-row items-center gap-5 w-full">
-                <div className="flex items-center justify-center rounded-full bg-[#F2F0E0] h-10 w-10">
+              <div className="flex items-center gap-5 w-full">
+                <div className="rounded-full bg-[#F2F0E0] h-10 w-10 flex justify-center items-center">
                   <AiOutlineDollar className="h-6 w-6" />
                 </div>
-                <div className="flex flex-col ">
+                <div>
                   <p className="text-[#6C6C70] text-[13px]">Transaction Fees</p>
-                  <p className="font-bold">None</p>
+                  <p className="font-bold">$0</p>
                 </div>
               </div>
-              <div className="flex flex-row items-center gap-5 w-full">
-                <div className="flex items-center justify-center rounded-full bg-[#EEDDFC] h-10 w-10">
+              <div className="flex items-center gap-5 w-full">
+                <div className="rounded-full bg-[#F4E1E9] h-10 w-10 flex justify-center items-center">
                   <SlLock className="h-6 w-6" />
                 </div>
-                <div className="flex flex-col ">
-                  <p className="text-[#6C6C70] text-[13px]">Security</p>
-                  <p className="font-bold">100% Guaranteed</p>
+                <div>
+                  <p className="text-[#6C6C70] text-[13px]">Security Fee</p>
+                  <p className="font-bold">$0.5</p>
                 </div>
               </div>
             </div>
             <button
-              className="mt-10 bg-black rounded-lg p-3 text-white"
               onClick={openCardModal}
+              className="bg-black text-white rounded-xl py-2 px-8 mt-10"
             >
-              Create my virtual card
+              Create Card
             </button>
           </div>
         )}
+        {showDashboard && <CardDashboard selectedCountry={selectedCountry} />}
       </div>
-
+      {/* Card Modal */}
       {isCardModalOpen && (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 md:p-10 rounded-2xl shadow-lg relative w-full max-w-md md:w-1/3 lg:max-w-lg xl:max-w-xl mx-4">
-            <>
-              <h2 className="text-center text-2xl font-bold mb-4">
-                Create Card
-              </h2>
-              <form className="w-full">
-                <div className="flex flex-col space-y-2 mb-5">
-                  <label htmlFor="choose-wallet" className="text-sm">
-                    Choose Wallet
-                  </label>
-                  <select
-                    id="choose-wallet"
-                    value={selectedCountry}
-                    onChange={handleCountryChange}
-                    className="p-2 border rounded-md bg-white focus:outline-none focus:ring focus:border-blue-300"
-                  >
-                    <option value="" disabled>
-                      Select a country
-                    </option>
-                    {countries.map((country) => (
-                      <option
-                        key={country.code}
-                        value={country.code}
-                        className="flex items-center"
-                      >
-                        {country.flag} {country.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="flex flex-col space-y-2 mb-5">
-                  <label htmlFor="amount" className="text-sm ">
-                    Amount
-                  </label>
-                  <input
-                    id="amount"
-                    placeholder="$ 50.00"
-                    type="text"
-                    className="bg-transparent w-full text-[16px] font-medium p-3 border border-[#CCCCCC] rounded-xl"
-                  />
-                </div>
-
-                <p className="text-sm text-[#6C6C70] mb-[40px]">
-                  You need to fund with at least $5
-                </p>
-              </form>
-              <button
-                type="button"
-                className="bg-black text-white font-medium py-3 px-4 shadow-md w-full rounded-xl mt-5"
-                onClick={handleNextClick}
-              >
-                Next
-              </button>
-            </>
             <button
               onClick={closeCardModal}
               className="absolute top-[-20px] md:right-[-35px] right-[-20px] bg-white border border-gray-300 rounded-full h-8 w-8 flex justify-center items-center"
             >
               <span className="text-black text-xl">×</span>
             </button>
+            <h1 className="text-center font-semibold mb-4">Create Card</h1>
+
+            {/* Card Type Selection */}
+            <div className="w-full flex flex-col items-center ">
+              {/* Label for the select dropdown */}
+              <label
+                htmlFor="wallet"
+                className="w-full text-left text-sm text-gray-700  mb-2"
+              >
+                Choose Wallet
+              </label>
+
+              <select
+                id="wallet"
+                value={selectedCountry}
+                onChange={handleCountryChange}
+                className="border border-gray-300 rounded-lg p-2 w-full focus:outline-none focus:border-black mb-5"
+              >
+                <option value="">Choose Wallet</option>
+                {countries.map((country) => (
+                  <option key={country.code} value={country.code}>
+                    {country.flag} {country.name}
+                  </option>
+                ))}
+              </select>
+
+              <div className="flex flex-col space-y-2 mb-5 w-full">
+                <label htmlFor="amount" className="text-sm">
+                  Amount
+                </label>
+                <input
+                  id="amount"
+                  placeholder="$ 50.00"
+                  type="text"
+                  className="bg-transparent w-full text-[16px] font-medium p-3 border border-[#CCCCCC] rounded-xl"
+                />
+              </div>
+
+              <p className="text-sm w-full">
+                You need to fund with at least 5$
+              </p>
+
+              <button
+                onClick={handleNextClick}
+                className="bg-black text-white rounded-xl py-2 px-8 mt-4 w-full"
+              >
+                Next
+              </button>
+            </div>
           </div>
         </div>
       )}
-
-      {showDashboard && <CardDashboard selectedCountry={selectedCountry} />}
     </>
   );
-}
+};
+
+export default Cards;
