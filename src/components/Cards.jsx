@@ -21,7 +21,7 @@ const CardDashboard = ({ selectedCountry }) => {
   };
 
   return (
-    <div className="rounded-xl p-10 flex flex-col w-full">
+    <div className="rounded-xl md:p-10  flex flex-col w-full">
       <img src={newcard} className="mb-5" alt="New Card" />
       <p className="flex items-center justify-center mb-5">Show Card Details</p>
       <div className="flex flex-col justify-center bg-white drop-shadow-lg p-5 rounded-xl">
@@ -118,7 +118,7 @@ export default function Cards() {
 
         {/* Only render this section if showDashboard is false */}
         {!showDashboard && (
-          <div className="bg-white rounded-xl p-10 flex flex-col w-full shadow-lg">
+          <div className="bg-white rounded-xl md:p-10 p-5 flex flex-col w-full shadow-lg">
             <div className="flex items-center justify-center">
               <img src={cards} alt="Cards" />
             </div>
