@@ -170,7 +170,7 @@ export default function Home() {
           </div>
         </div>
         <p className="mt-10 font-bold">Quick Actions</p>
-        <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-10 w-full ">
+        <div className="mt-5 grid grid-cols-1 md:grid-cols-2 md:gap-10 gap-4 w-full ">
           {/* Send Action */}
           <div
             className="bg-[#C1E8EB] p-6 flex flex-row gap-5 items-center rounded-2xl border cursor-pointer"
