@@ -9,7 +9,7 @@ const TransactionItem = ({ time, name, amount, imgSrc, amountColor }) => {
         <div>
           <img src={imgSrc} className="w-[60px]" alt="Transaction Icon" />
         </div>
-        <div className="text-white">
+        <div className="text-black">
           <h3 className="mb-1">{name}</h3>
           <h2 class="text-gray-500">{time}</h2>
         </div>

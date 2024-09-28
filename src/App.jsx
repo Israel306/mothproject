@@ -4,9 +4,9 @@ import Login from "./pages/onboarding/Login";
 import Signup from "./pages/onboarding/Signup";
 import Otp from "./pages/onboarding/Otp";
 import Acctsetup from "./pages/onboarding/Acctsetup";
-
 import Dashboard from "./pages/onboarding/Dashboard/Dashboard";
 import NextPage from "./components/Nextpage";
+import TransactionList from "./components/TransactionList";
 
 function App() {
   return (
@@ -19,6 +19,7 @@ function App() {
         <Route path="acctsetup" element={<Acctsetup />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="/next-page" element={<NextPage />} />
+        <Route path="transaction-list" element={<TransactionList />} />
       </Routes>
     </Router>
   );

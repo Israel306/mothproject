@@ -1,10 +1,41 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import cards from "/src/assets/cards.svg";
 import { GiSwipeCard } from "react-icons/gi";
 import { AiOutlineDollar } from "react-icons/ai";
 import { SlLock } from "react-icons/sl";
+import BankSelect from "./BankSelect";
 
 export default function Cards() {
+  const [isCardModalOpen, setIsCardModalOpen] = useState(false);
+  const [step, setStep] = useState(1);
+  const [selectedCountry, setSelectedCountry] = useState("");
+
+  // Function to open the request modal
+  const openCardModal = () => {
+    setIsCardModalOpen(true);
+  };
+
+  const countries = [
+    { code: "US", name: "United States Dollar", flag: "🇺🇸", amount: "500" },
+    { code: "NG", name: "Nigeria Naira", flag: "🇳🇬" },
+    { code: "CA", name: "Canada Canadian Dollar", flag: "🇨🇦" },
+    { code: "UK", name: "United Kingdom Pounds", flag: "🇬🇧" },
+  ];
+
+  const handleCountryChange = (e) => {
+    setSelectedCountry(e.target.value);
+  };
+
+  // Function to close the request modal
+  const closeCardModal = () => {
+    setIsCardModalOpen(false);
+    setStep(1);
+  };
+
+  const handleNextClick = () => {
+    setStep(2); // Proceed to the Review & Confirm step
+  };
+
   return (
     <>
       <div className="flex flex-col w-full">
@@ -46,11 +77,84 @@ export default function Cards() {
               </div>
             </div>
           </div>
-          <button className="mt-10 bg-black rounded-lg p-3  text-white">
+          <button
+            className="mt-10 bg-black rounded-lg p-3 text-white"
+            onClick={openCardModal}
+          >
             Create my virtual card
           </button>
         </div>
       </div>
+      {isCardModalOpen && (
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 md:p-10 rounded-2xl shadow-lg relative w-full max-w-md md:w-1/3 lg:max-w-lg xl:max-w-xl mx-4">
+            {step === 1 && (
+              <>
+                <h2 className="text-center text-2xl font-bold mb-4">
+                  Create Card
+                </h2>
+                <form className="w-full">
+                  {/* Step 1 fields */}
+                  <div className="flex flex-col space-y-2 mb-5">
+                    <label htmlFor="choose-wallet" className="text-sm">
+                      Choose Wallet
+                    </label>
+                    <select
+                      id="choose-wallet"
+                      value={selectedCountry}
+                      onChange={handleCountryChange}
+                      className="p-2 border rounded-md bg-white focus:outline-none focus:ring focus:border-blue-300"
+                    >
+                      <option value="" disabled>
+                        Select a country
+                      </option>
+                      {countries.map((country) => (
+                        <option
+                          key={country.code}
+                          value={country.code}
+                          className="flex items-center"
+                        >
+                          {country.flag} {country.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="flex flex-col space-y-2 mb-5">
+                    <label htmlFor="amount" className="text-sm ">
+                      Amount
+                    </label>
+                    <input
+                      id="amount"
+                      placeholder="$ 50.00"
+                      type="text"
+                      className="bg-transparent w-full text-[16px] font-medium p-3 border border-[#CCCCCC] rounded-xl"
+                    />
+                  </div>
+
+                  <p className="text-sm text-[#6C6C70] mb-[40px]">
+                    You need to fund with at least $5
+                  </p>
+                </form>
+                <button
+                  type="button"
+                  className="bg-black text-white font-medium py-3 px-4 shadow-md w-full rounded-xl mt-5"
+                  onClick={handleNextClick}
+                >
+                  Next
+                </button>
+              </>
+            )}
+
+            <button
+              onClick={closeCardModal}
+              className="absolute top-[-20px] md:right-[-35px] right-[-20px] bg-white border border-gray-300 rounded-full h-8 w-8 flex justify-center items-center"
+            >
+              <span className="text-black text-xl">×</span>
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 }

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import CardDetails from "./CardDetails";
 import send from "/src/assets/send.svg";
 import request from "/src/assets/request.svg";
-import newswap from "/src/assets/newswap.png";
+import changedswap from "/src/assets/changedswap.png";
 import withdraw from "/src/assets/withdraw.svg";
 import debit from "/src/assets/debit.svg";
 import credit from "/src/assets/credit.svg";
@@ -13,6 +13,7 @@ import BankSelect from "./BankSelect";
 import transactionsuccess from "/src/assets/transactionsuccess.png";
 import copy from "/src/assets/copy.svg";
 import FlagSelector from "./FlagSelector";
+import TransactionList from "./TransactionList";
 
 export default function Home() {
   const [isSendModalOpen, setIsSendModalOpen] = useState(false);
@@ -22,6 +23,7 @@ export default function Home() {
   const [ngnAmount, setNgnAmount] = useState("");
   const [convertedAmount, setConvertedAmount] = useState(0);
   const [selectedCurrency, setSelectedCurrency] = useState("USD"); // Default to USD
+  const [conversionDetails, setConversionDetails] = useState(null);
   const [step, setStep] = useState(1); // Step 1 represents the Send Money form
   const navigate = useNavigate();
 
@@ -78,13 +80,10 @@ export default function Home() {
     setStep(4); // Proceed to the Review & Confirm step
   };
 
-  const swap = () => {
-    setStep(2); // Proceed to the Review & Confirm step
-  };
-
   const handleGenerateReceipt = () => {
     // After generating the receipt, navigate back to the home page
     setIsSendModalOpen(false);
+    setStep(1);
   };
 
   const inputRefs = useRef([]);
@@ -104,19 +103,29 @@ export default function Home() {
     }
   };
 
+  // Function to handle the conversion logic
   const handleConvert = (e) => {
-    const value = parseFloat(e.target.value); // Parse value as float
-    setNgnAmount(value);
-
-    if (!isNaN(value)) {
-      // Convert NGN to the selected currency
-      const convertedValue = (value / exchangeRates[selectedCurrency]).toFixed(
-        2
-      );
-      setConvertedAmount(convertedValue);
+    const amount = e.target.value;
+    setNgnAmount(amount);
+    if (amount) {
+      // Assuming exchangeRates[selectedCurrency] gives the rate to the selected currency
+      const rate = exchangeRates[selectedCurrency];
+      const converted = (amount / rate).toFixed(2); // Convert NGN to selected currency
+      setConvertedAmount(converted);
     } else {
-      setConvertedAmount(0); // Reset if the input is not a number
+      setConvertedAmount(0);
     }
+  };
+
+  // Function to handle swapping and navigating to the next step
+  const swap = () => {
+    // Save conversion details to state
+    setConversionDetails({
+      ngnAmount,
+      convertedAmount,
+      selectedCurrency,
+    });
+    setStep(2); // Navigate to the next step
   };
 
   const exchangeRates = {
@@ -136,6 +145,11 @@ export default function Home() {
     // Add flags for other currencies as needed
   };
 
+  const handleSwapSuccess = () => {
+    // After generating the receipt, navigate back to the home page
+    setIsSwapModalOpen(false);
+    setStep(1);
+  };
   return (
     <>
       {/* Blur background if the modal is open */}
@@ -156,7 +170,7 @@ export default function Home() {
           </div>
         </div>
         <p className="mt-10 font-bold">Quick Actions</p>
-        <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-10 w-full">
+        <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-10 w-full ">
           {/* Send Action */}
           <div
             className="bg-[#C1E8EB] p-6 flex flex-row gap-5 items-center rounded-2xl border cursor-pointer"
@@ -186,7 +200,7 @@ export default function Home() {
             className="bg-[#EEDDFC] p-6 flex flex-row gap-5 items-center rounded-2xl border cursor-pointer"
             onClick={openSwapModal} // Open the modal when clicked
           >
-            <img className="h-14 w-14" src={newswap} alt="swap icon" />
+            <img className="h-14 w-14" src={changedswap} alt="swap icon" />
             <div className="flex flex-col">
               <p className="font-bold">Swap</p>
               <p className="mt-2">
@@ -211,7 +225,7 @@ export default function Home() {
         <div className="mt-10 rounded-lg border bg-white p-4 w-full">
           <div className="flex flex-row items-center justify-between">
             <p>Recent Transactions</p>
-            <Link to="">
+            <Link to="/dashboard" state={{ activeMenu: "History" }}>
               <p>View All</p>
             </Link>
           </div>
@@ -536,21 +550,15 @@ export default function Home() {
           <div className="bg-white p-6 md:p-10 rounded-2xl shadow-lg relative w-full max-w-md md:w-1/3 lg:max-w-lg xl:max-w-xl mx-4">
             {step === 1 && (
               <>
-                <div className="p-10  rounded-md max-w-md mx-auto">
-                  <div>
-                    <h1 className="text-black mb-10 text-center">
-                      Convert NGN
-                    </h1>
-
-                    <div className="mb-5 text-center">
-                      <p className="text-black">Wallet Balance $50,344.00</p>
-                    </div>
+                <div className="p-10 rounded-md max-w-md mx-auto">
+                  <h1 className="text-black mb-10 text-center">Convert NGN</h1>
+                  <div className="mb-5 text-center">
+                    <p className="text-black">Wallet Balance $50,344.00</p>
                   </div>
 
                   {/* From Currency */}
                   <div className="flex justify-center items-center mb-5">
-                    <span>{flags["NGN"] || "🇳🇬"}</span>{" "}
-                    {/* Display NGN flag or default to Nigerian flag */}
+                    <span>{flags["NGN"] || "🇳🇬"}</span> {/* Display NGN flag */}
                   </div>
 
                   {/* Input field to enter NGN amount */}
@@ -567,14 +575,14 @@ export default function Home() {
                     />
                   </div>
 
+                  {/* Dynamic Exchange Rate */}
                   <div className="text-black mb-5 text-center text-sm">
-                    {/* Display dynamic exchange rate based on selected currency */}
                     Exchange Rate ₦
                     {exchangeRates[selectedCurrency].toLocaleString()} ={" "}
                     {selectedCurrency}
                   </div>
 
-                  {/* To Currency Selector */}
+                  {/* Currency Selector */}
                   <div className="text-center mb-5">
                     <p className="text-black mb-5">To</p>
                     <select
@@ -601,6 +609,8 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
+
+                {/* Next Button */}
                 <button
                   type="button"
                   className="bg-black text-white font-medium py-3 px-4 shadow-md w-full rounded-xl mt-5"
@@ -616,25 +626,32 @@ export default function Home() {
                 <h2 className="text-center text-2xl font-bold mb-4">
                   Successful
                 </h2>
-                {/* Step 2 fields */}
-                <p className="text-center mb-10">
-                  You converted ₦1600 to $1.00{" "}
-                </p>
-                {/* Add review details or summary here */}
-
+                {/* Display conversion details */}
+                {conversionDetails && (
+                  <p className="text-center mb-10">
+                    You converted ₦{conversionDetails.ngnAmount} to{" "}
+                    {flags[conversionDetails.selectedCurrency]}{" "}
+                    {conversionDetails.convertedAmount}{" "}
+                    {conversionDetails.selectedCurrency}
+                  </p>
+                )}
+                {/* Display success image */}
                 <div className="flex justify-center mb-[100px]">
-                  <img src={transactionsuccess}></img>
+                  <img src={transactionsuccess} alt="Transaction Success" />
                 </div>
+
+                {/* Done Button */}
                 <button
                   type="button"
                   className="bg-black text-white font-medium py-3 px-4 shadow-md w-full rounded-xl mt-5"
-                  onClick={handleGenerateReceipt}
+                  onClick={handleSwapSuccess}
                 >
                   Done
                 </button>
               </>
             )}
 
+            {/* Close Button */}
             <button
               onClick={closeSwapModal}
               className="absolute top-[-20px] md:right-[-35px] right-[-20px] bg-white border border-gray-300 rounded-full h-8 w-8 flex justify-center items-center"

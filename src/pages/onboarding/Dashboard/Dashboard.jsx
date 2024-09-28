@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import logo from "/src/assets/logo.svg";
 import home from "/src/assets/home.svg";
 import card from "/src/assets/card.svg";
@@ -9,18 +9,27 @@ import logout from "/src/assets/logout.svg";
 import Home from "../../../components/Home";
 import Notification from "../../../components/Notification";
 import Cards from "../../../components/Cards";
+import TransactionList from "../../../components/TransactionList";
 import { FiMenu, FiX } from "react-icons/fi";
 import notification from "/src/assets/notification.svg";
 import atm from "/src/assets/atm.png";
-import bgimg from "/src/assets/bgimg.png";
 import mothcoin from "/src/assets/mothcoin.png";
 import googleplay from "/src/assets/googleplay.svg";
 import appstore from "/src/assets/appstore.svg";
 
 function Dashboard() {
+  const location = useLocation();
   const [activeMenu, setActiveMenu] = useState("Home");
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
+
+  useEffect(() => {
+    // Set active menu based on the state passed via navigation (e.g., from the "View All" link)
+    if (location.state?.activeMenu) {
+      setActiveMenu(location.state.activeMenu);
+    }
+  }, [location]);
 
   const handleMenuClick = (menu) => {
     setActiveMenu(menu);
@@ -42,7 +51,7 @@ function Dashboard() {
       case "Card":
         return <Cards />;
       case "History":
-        return <History />;
+        return <TransactionList />;
       case "Profile":
         return <Profile />;
       default:
@@ -146,7 +155,7 @@ function Dashboard() {
             </button>
           </div>
           <div className="mt-5 rounded-lg bg-white border p-4">
-            <p className="text-[#6C6C70] mb-2">Today</p>
+            <p className="text-[#6C6C70] mb-2 ">Today</p>
             {[
               "Amara Ayana requested $500",
               "Moth Finance",
@@ -164,8 +173,8 @@ function Dashboard() {
                   />
                 </div>
                 <div className="flex flex-col ">
-                  <p className="font-bold">{notificationText}</p>
-                  <p className="text-[#6C6C70]">July 06 at 8:00pm</p>
+                  <p className="font-bold text-sm">{notificationText}</p>
+                  <p className="text-[#6C6C70] text-sm">July 06 at 8:00pm</p>
                 </div>
               </div>
             ))}
