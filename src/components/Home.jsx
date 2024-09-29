@@ -20,6 +20,7 @@ export default function Home() {
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
   const [isSwapModalOpen, setIsSwapModalOpen] = useState(false);
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
+  const [isTopUpModalOpen, setIsTopUpModalOpen] = useState(false);
   const [ngnAmount, setNgnAmount] = useState("");
   const [convertedAmount, setConvertedAmount] = useState(0);
   const [selectedCurrency, setSelectedCurrency] = useState("USD"); // Default to USD
@@ -68,6 +69,15 @@ export default function Home() {
     setIsWithdrawModalOpen(false);
   };
 
+  // Function to open the swap modal
+  const openTopUpModal = () => {
+    setIsTopUpModalOpen(true);
+  };
+
+  // Function to close the swap modal
+  const closeTopUpModal = () => {
+    setIsTopUpOpen(false);
+  };
   const handleNextClick = () => {
     setStep(2); // Proceed to the Review & Confirm step
   };
@@ -155,7 +165,13 @@ export default function Home() {
       {/* Blur background if the modal is open */}
       <div
         className={`flex flex-col items-start ${
-          isSendModalOpen ? "blur-sm" : ""
+          isSendModalOpen ||
+          isRequestModalOpen ||
+          isSwapModalOpen ||
+          isWithdrawModalOpen ||
+          isTopUpModalOpen
+            ? "blur-sm"
+            : ""
         }`}
       >
         <h1>Welcome back, Matt👋🏻</h1>
@@ -508,7 +524,7 @@ export default function Home() {
       )}
 
       {isRequestModalOpen && (
-        <div className="fixed inset-0 flex justify-center items-center  bg-opacity-50 z-50">
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 md:p-10 rounded-2xl shadow-lg relative w-full max-w-md md:w-1/3 lg:max-w-lg xl:max-w-xl mx-4">
             <div className="md:p-8 p-3 ">
               <div className="">
@@ -546,59 +562,82 @@ export default function Home() {
       )}
 
       {isSwapModalOpen && (
-        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 md:p-10 rounded-2xl shadow-lg relative w-full max-w-md md:w-1/3 lg:max-w-lg xl:max-w-xl mx-4">
+        <div className="bg-black fixed inset-0 flex justify-center items-center  bg-opacity-50 z-50">
+          <div className="bg-white p-6 md:p-10 rounded-2xl  relative w-full max-w-md md:w-1/3 lg:max-w-lg xl:max-w-xl mx-4">
             {step === 1 && (
               <>
-                <div className="p-10 rounded-md max-w-md mx-auto">
-                  <h1 className="text-black mb-10 text-center">Convert NGN</h1>
-                  <div className="mb-5 text-center">
-                    <p className="text-black">Wallet Balance $50,344.00</p>
-                  </div>
+                <div className="p-6 max-w-md mx-auto rounded-md ">
+                  <h1 className="text-black text-center mb-6">Convert NGN</h1>
 
-                  {/* From Currency */}
-                  <div className="flex justify-center items-center mb-5">
-                    <span>{flags["NGN"] || "🇳🇬"}</span> {/* Display NGN flag */}
-                  </div>
-
-                  {/* Input field to enter NGN amount */}
-                  <div className="text-center mb-5">
-                    <p className="text-black mb-2 text-sm">
-                      Enter Amount in NGN
+                  {/* Display Wallet Balance */}
+                  <div className="text-center mb-6">
+                    <p className="text-gray-700 font-semibold">
+                      Wallet Balance: $50,344.00
                     </p>
-                    <input
-                      type="number"
-                      value={ngnAmount}
-                      onChange={handleConvert}
-                      placeholder="Enter NGN amount"
-                      className="p-2 border rounded-xl text-center w-2/3"
-                    />
                   </div>
 
-                  {/* Dynamic Exchange Rate */}
-                  <div className="text-black mb-5 text-center text-sm">
-                    Exchange Rate ₦
-                    {exchangeRates[selectedCurrency].toLocaleString()} ={" "}
-                    {selectedCurrency}
+                  {/* Amount to Convert */}
+                  <div className="flex flex-col space-y-2 mb-6">
+                    <label
+                      htmlFor="enter-amount"
+                      className="text-sm text-gray-600"
+                    >
+                      Enter Amount in NGN
+                    </label>
+                    <div className="border flex items-center p-2 rounded-xl">
+                      {/* Dropdown for selecting NGN */}
+                      <select
+                        className="bg-transparent outline-none mr-2"
+                        value="NGN"
+                        disabled
+                      >
+                        <option value="NGN">🇳🇬 NGN</option>
+                      </select>
+
+                      {/* Input field for NGN amount */}
+                      <input
+                        type="number"
+                        value={ngnAmount}
+                        onChange={handleConvert}
+                        placeholder="Enter NGN amount"
+                        className="w-full p-2 outline-none border-l "
+                      />
+                    </div>
+                  </div>
+
+                  {/* Display Exchange Rate */}
+                  <div className="text-black text-center text-sm mb-6">
+                    <p>
+                      Exchange Rate: ₦
+                      {exchangeRates[selectedCurrency].toLocaleString()} ={" "}
+                      {selectedCurrency}
+                    </p>
                   </div>
 
                   {/* Currency Selector */}
-                  <div className="text-center mb-5">
-                    <p className="text-black mb-5">To</p>
-                    <select
-                      className="p-2 border rounded-md"
-                      value={selectedCurrency}
-                      onChange={(e) => setSelectedCurrency(e.target.value)}
+                  <div className="flex flex-col space-y-2 mb-6">
+                    <label
+                      htmlFor="currency-select"
+                      className="text-sm text-gray-600"
                     >
-                      {Object.keys(exchangeRates).map((currency) => (
-                        <option key={currency} value={currency}>
-                          {flags[currency]} {currency}
-                        </option>
-                      ))}
-                    </select>
+                      Convert To
+                    </label>
+                    <div className="border flex items-center p-2 rounded-xl">
+                      <select
+                        className="bg-transparent outline-none w-full"
+                        value={selectedCurrency}
+                        onChange={(e) => setSelectedCurrency(e.target.value)}
+                      >
+                        {Object.keys(exchangeRates).map((currency) => (
+                          <option key={currency} value={currency}>
+                            {flags[currency]} {currency}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
 
-                  {/* Display converted amount */}
+                  {/* Display Converted Amount */}
                   <div className="text-center">
                     <h2 className="text-black mb-2 text-sm">
                       Converted Amount
