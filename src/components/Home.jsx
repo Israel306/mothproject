@@ -5,7 +5,10 @@ import send from "/src/assets/send.svg";
 import request from "/src/assets/request.svg";
 import changedswap from "/src/assets/changedswap.png";
 import withdraw from "/src/assets/withdraw.svg";
+import withdraw1 from "/src/assets/withdraw1.svg";
+import withdraw2 from "/src/assets/withdraw2.svg";
 import debit from "/src/assets/debit.svg";
+import qrcode from "/src/assets/qrcode.svg";
 import credit from "/src/assets/credit.svg";
 import TransactionItem from "./TransactionItem";
 import bgimg3 from "/src/assets/bgimg3.png";
@@ -26,6 +29,7 @@ export default function Home() {
   const [selectedCurrency, setSelectedCurrency] = useState("USD"); // Default to USD
   const [conversionDetails, setConversionDetails] = useState(null);
   const [step, setStep] = useState(1); // Step 1 represents the Send Money form
+  const [selectedCountry, setSelectedCountry] = useState("US");
   const navigate = useNavigate();
 
   // Function to open the modal
@@ -67,6 +71,7 @@ export default function Home() {
   // Function to close the swap modal
   const closeWithdrawModal = () => {
     setIsWithdrawModalOpen(false);
+    setStep(1);
   };
 
   // Function to open the swap modal
@@ -159,6 +164,18 @@ export default function Home() {
     // After generating the receipt, navigate back to the home page
     setIsSwapModalOpen(false);
     setStep(1);
+  };
+
+  const countries = [
+    { code: "US", name: "United States", flag: "🇺🇸", placeholder: "$ 50" },
+    { code: "CA", name: "Canada", flag: "🇨🇦", placeholder: "$ 50" },
+    { code: "UK", name: "United Kingdom", flag: "🇬🇧", placeholder: "£ 50" },
+    { code: "NIG", name: "Nigeria", flag: "🇳🇬", placeholder: "₦ 50" },
+    // Add more countries as needed
+  ];
+
+  const handleCountryChange = (event) => {
+    setSelectedCountry(event.target.value);
   };
   return (
     <>
@@ -704,6 +721,294 @@ export default function Home() {
       {isWithdrawModalOpen && (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 md:p-10 rounded-2xl shadow-lg relative w-full max-w-md md:w-1/3 lg:max-w-lg xl:max-w-xl mx-4">
+            {/* Step 1: Withdraw Option Selection */}
+            {step === 1 && (
+              <div className="p-6 max-w-md mx-auto rounded-md">
+                <h1 className="text-black text-center mb-10">Withdraw Funds</h1>
+                <button
+                  className="flex items-center gap-5 mb-5 border border-[#E1E1E1] p-3 rounded-xl"
+                  onClick={() => setStep(2)} // Navigate to Step 2 for Bank Account
+                >
+                  <img src={withdraw1} alt="Via Bank Account" className="" />
+                  <div className="flex flex-col text-start">
+                    <h3 className="text-black">Via Bank Account</h3>
+                    <p className="text-[grey] text-sm">
+                      Withdraw directly to your bank account
+                    </p>
+                  </div>
+                </button>
+                <button
+                  className="flex items-center gap-5 mb-5 border border-[#E1E1E1] p-3 rounded-xl"
+                  onClick={() => setStep(5)} // Navigate to Step 5 for QR Code Withdrawal
+                >
+                  <img src={withdraw2} alt="Via QR Code" className="" />
+                  <div className="flex flex-col text-start">
+                    <h3 className="text-black">Via QR Code</h3>
+                    <p className="text-[grey] text-sm">
+                      Generate a code for cardless withdrawal
+                    </p>
+                  </div>
+                </button>
+              </div>
+            )}
+
+            {/* Step 2: Withdraw via Bank Account - Page 1 */}
+            {step === 2 && (
+              <div className="p-6 max-w-md mx-auto">
+                <h2 className="text-black text-2xl text-center mb-10">
+                  Withdraw funds
+                </h2>
+                <form className="w-full">
+                  <div className="flex flex-col space-y-2 mb-5">
+                    <label htmlFor="enter-amount" className="text-sm">
+                      Withdraw from
+                    </label>
+                    <div className="border flex items-center p-2 rounded-xl">
+                      {/* Dropdown for selecting country */}
+                      <select
+                        className="bg-transparent outline-none mr-2"
+                        value={selectedCountry.code}
+                        onChange={(e) =>
+                          setSelectedCountry(
+                            countries.find(
+                              (country) => country.code === e.target.value
+                            )
+                          )
+                        }
+                      >
+                        {countries.map((country) => (
+                          <option key={country.code} value={country.code}>
+                            {country.flag} {country.code}
+                          </option>
+                        ))}
+                      </select>
+                      {/* Input field */}
+                      <input
+                        placeholder={selectedCountry.placeholder}
+                        type="text"
+                        className="w-full p-2 outline-none border-l border-gray-200"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col space-y-2 mb-10">
+                    <label htmlFor="amount" className="text-sm">
+                      Amount
+                    </label>
+                    <input
+                      id="amount"
+                      placeholder="$ 50.00"
+                      type="text"
+                      className="bg-transparent w-full text-[16px] font-medium p-3 border border-[#CCCCCC] rounded-xl"
+                    />
+                  </div>
+                </form>
+                <button
+                  className="bg-black text-white py-2 px-4 rounded-xl w-full"
+                  onClick={() => setStep(3)} // Navigate to Step 3
+                >
+                  Next
+                </button>
+              </div>
+            )}
+
+            {/* Step 3: Withdraw via Bank Account - Page 2 */}
+            {step === 3 && (
+              <div className="p-6 max-w-md mx-auto">
+                <h2 className="text-black text-2xl text-center mb-3">
+                  Confirm Details
+                </h2>
+
+                <p className="text-center text-sm mb-3 text-[grey]">Withdraw</p>
+                <h3 className="text-center mb-10">$50.00</h3>
+
+                <div className="border-b border-b-[#E1E1E1] mt-2"></div>
+
+                <div className="flex justify-between  mt-5 ">
+                  <h2 className="leading-8 text-[#6C6C70]">Account</h2>
+                  <h2 className="leading-8">USD wallet</h2>
+                </div>
+                <div className="border-dashed border border-b-[#E1E1E1] mt-2"></div>
+
+                <div className="flex justify-between  mt-5  ">
+                  <h2 className="leading-8 text-[#6C6C70]">Amount</h2>
+                  <h2 className="leading-8">$50.00</h2>
+                </div>
+                <div className="border-dashed border border-b-[#E1E1E1] mt-2 mb-10"></div>
+
+                {/* Confirmation content for bank withdrawal */}
+                <button
+                  className="bg-black text-white py-2 px-4 rounded-xl w-full"
+                  onClick={() => setStep(4)} // Navigate to Step 4
+                >
+                  Next
+                </button>
+              </div>
+            )}
+
+            {/* Step 4: Withdraw via Bank Account - Receipt Page */}
+            {step === 4 && (
+              <div className="p-6 max-w-md mx-auto">
+                <h2 className="text-black text-2xl text-center mb-5">
+                  Successful
+                </h2>
+
+                <p className="text-center text-sm  text-[grey] mb-[70px]">
+                  {" "}
+                  $50.00 has been sent to your bank account
+                </p>
+
+                <div className="flex justify-center mb-[50px]">
+                  <img src={transactionsuccess}></img>
+                </div>
+                {/* Display receipt or success message */}
+                <button
+                  className="bg-black text-white py-2 px-4 rounded-xl w-full"
+                  onClick={closeWithdrawModal} // Close the modal after viewing receipt
+                >
+                  Done
+                </button>
+              </div>
+            )}
+
+            {/* Step 5: Withdraw via QR Code - Page 1 */}
+            {step === 5 && (
+              <div className="p-6 max-w-md mx-auto">
+                <h2 className="text-black text-2xl text-center mb-10">
+                  Withdraw funds
+                </h2>
+                <form className="w-full">
+                  <div className="flex flex-col space-y-2 mb-5">
+                    <label htmlFor="enter-amount" className="text-sm">
+                      Withdraw from
+                    </label>
+                    <div className="border flex items-center p-2 rounded-xl">
+                      {/* Dropdown for selecting country */}
+                      <select
+                        className="bg-transparent outline-none mr-2"
+                        value={selectedCountry.code}
+                        onChange={(e) =>
+                          setSelectedCountry(
+                            countries.find(
+                              (country) => country.code === e.target.value
+                            )
+                          )
+                        }
+                      >
+                        {countries.map((country) => (
+                          <option key={country.code} value={country.code}>
+                            {country.flag} {country.code}
+                          </option>
+                        ))}
+                      </select>
+                      {/* Input field */}
+                      <input
+                        placeholder={selectedCountry.placeholder}
+                        type="text"
+                        className="w-full p-2 outline-none border-l border-gray-200"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col space-y-2 mb-10">
+                    <label htmlFor="amount" className="text-sm">
+                      Amount
+                    </label>
+                    <input
+                      id="amount"
+                      placeholder="$ 50.00"
+                      type="text"
+                      className="bg-transparent w-full text-[16px] font-medium p-3 border border-[#CCCCCC] rounded-xl"
+                    />
+                  </div>
+                </form>
+                <button
+                  className="bg-black text-white py-2 px-4 rounded-xl w-full"
+                  onClick={() => setStep(6)} // Navigate to Step 3
+                >
+                  Next
+                </button>
+              </div>
+            )}
+
+            {/* Step 6: Withdraw via QR Code - Page 2 */}
+            {step === 6 && (
+              <div className="p-6 max-w-md mx-auto">
+                <h2 className="text-black text-2xl text-center mb-3">
+                  Confirm Details
+                </h2>
+
+                <p className="text-center text-sm mb-3 text-[grey]">Withdraw</p>
+                <h3 className="text-center mb-10">$50.00</h3>
+
+                <div className="border-b border-b-[#E1E1E1] mt-2"></div>
+
+                <div className="flex justify-between  mt-5 ">
+                  <h2 className="leading-8 text-[#6C6C70]">Account</h2>
+                  <h2 className="leading-8">USD wallet</h2>
+                </div>
+                <div className="border-dashed border border-b-[#E1E1E1] mt-2"></div>
+
+                <div className="flex justify-between  mt-5  ">
+                  <h2 className="leading-8 text-[#6C6C70]">Amount</h2>
+                  <h2 className="leading-8">$50.00</h2>
+                </div>
+                <div className="border-dashed border border-b-[#E1E1E1] mt-2 mb-10"></div>
+
+                {/* Confirmation content for bank withdrawal */}
+                <button
+                  className="bg-black text-white py-2 px-4 rounded-xl w-full"
+                  onClick={() => setStep(7)} // Navigate to Step 4
+                >
+                  Next
+                </button>
+              </div>
+            )}
+
+            {/* Step 7: Withdraw via QR Code - Receipt Page */}
+            {step === 7 && (
+              <div className="p-6 max-w-md mx-auto">
+                <h2 className="text-black text-2xl text-center mb-5">
+                  Successful
+                </h2>
+
+                <div className="flex justify-center mb-[10px]">
+                  <img src={transactionsuccess}></img>
+                </div>
+
+                <p className="text-center text-sm  text-black mb-4 "> $50.00</p>
+
+                <p className="text-center text-sm text-[grey] mb-4 ">
+                  Withdrawal Successful
+                </p>
+
+                <div className="flex justify-center mb-5">
+                  <img src={qrcode}></img>
+                </div>
+
+                <div className="">
+                  <p className="text-[grey] mb-2"> Reference No.</p>
+                  <h3 className="mb-7">MO_BA_2375590686959-47484929</h3>
+                </div>
+
+                <div className="border-dashed border border-b-[#E1E1E1] mt-2 mb-5"></div>
+
+                <h3 className="text-[grey] text-sm mb-4">
+                  Please present this code to the ATM to continue with your
+                  transaction
+                </h3>
+
+                {/* Display receipt or success message */}
+                <button
+                  className="bg-black text-white py-2 px-4 rounded-xl w-full"
+                  onClick={closeWithdrawModal} // Close the modal after viewing receipt
+                >
+                  Done
+                </button>
+              </div>
+            )}
+
+            {/* Close button */}
             <button
               onClick={closeWithdrawModal}
               className="absolute top-[-20px] md:right-[-35px] right-[-20px] bg-white border border-gray-300 rounded-full h-8 w-8 flex justify-center items-center"

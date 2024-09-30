@@ -7,9 +7,10 @@ import history from "/src/assets/history.svg";
 import profile from "/src/assets/profile.svg";
 import logout from "/src/assets/logout.svg";
 import Home from "../../../components/Home";
-import Notification from "../../../components/Notification";
 import Cards from "../../../components/Cards";
 import TransactionList from "../../../components/TransactionList";
+import atm1 from "/src/assets/atm1.svg";
+import address from "/src/assets/address.svg";
 import { FiMenu, FiX } from "react-icons/fi";
 import notification from "/src/assets/notification.svg";
 import atm from "/src/assets/atm.png";
@@ -20,9 +21,27 @@ import appstore from "/src/assets/appstore.svg";
 function Dashboard() {
   const location = useLocation();
   const [activeMenu, setActiveMenu] = useState("Home");
-
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
+  const [isAtmModalOpen, setIsAtmModalOpen] = useState(false);
+  const [isRequestModalOpen, setIsRequestModalOpen] = useState(false); // Added missing state for 'isRequestModalOpen'
+  const [step, setStep] = useState(1);
+
+  // Function to open the ATM modal
+  const openAtmModal = () => {
+    setIsAtmModalOpen(true);
+  };
+
+  // Function to close the ATM modal and reset the steps
+  const closeAtmModal = () => {
+    setIsAtmModalOpen(false);
+    setStep(1); // Reset to step 1 when the modal is closed
+  };
+
+  // Function to close the request modal
+  const closeRequestModal = () => {
+    setIsRequestModalOpen(false);
+  };
 
   useEffect(() => {
     // Set active menu based on the state passed via navigation (e.g., from the "View All" link)
@@ -63,7 +82,7 @@ function Dashboard() {
     <div className="w-full h-screen lg:grid lg:grid-cols-[250px_1fr_450px]">
       {/* Sidebar */}
       <div
-        className={`fixed  overflow-y-auto inset-y-0 left-0 z-30 w-64 transform ${
+        className={`fixed overflow-y-auto inset-y-0 left-0 z-30 w-64 transform ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } bg-black p-10 lg:static lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col justify-between`}
       >
@@ -141,7 +160,7 @@ function Dashboard() {
 
       {/* Notification Panel */}
       <div
-        className={`fixed  overflow-y-auto inset-y-0 right-0 z-20 w-96 lg:w-full bg-[#F6F6F6] p-10 transition-transform duration-300 ease-in-out ${
+        className={`fixed overflow-y-auto inset-y-0 right-0 z-20 w-96 lg:w-full bg-[#F6F6F6] p-10 transition-transform duration-300 ease-in-out ${
           notificationOpen ? "translate-x-0" : "translate-x-full"
         } lg:static lg:translate-x-0`}
       >
@@ -155,7 +174,7 @@ function Dashboard() {
             </button>
           </div>
           <div className="mt-5 rounded-lg bg-white border p-4">
-            <p className="text-[#6C6C70] mb-2 ">Today</p>
+            <p className="text-[#6C6C70] mb-2">Today</p>
             {[
               "Amara Ayana requested $500",
               "Moth Finance",
@@ -180,7 +199,12 @@ function Dashboard() {
             ))}
           </div>
           <div className="mt-10">
-            <img className="w-full" src={atm} alt="ATM" />
+            <img
+              className="w-full"
+              src={atm}
+              onClick={openAtmModal}
+              alt="ATM"
+            />
           </div>
           <div className="mt-5">
             <img className="w-full" src={mothcoin} alt="Mothcoin" />
@@ -191,6 +215,31 @@ function Dashboard() {
           </div>
         </div>
       </div>
+
+      {/* ATM Modal */}
+      {isAtmModalOpen && (
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 md:p-8 rounded-2xl relative w-full max-w-md md:w-1/3 lg:max-w-lg xl:max-w-xl mx-4">
+            <h2 className="text-black text-2xl text-center mb-5 font-bold">
+              Find ATM
+            </h2>
+            <div className="md:p-8 p-3 ">
+              <div className="mt-6 relative">
+                <img className="w-full" src={atm1} alt="ATM Modal Image" />
+                <div className="inset-0 absolute flex justify-end">
+                  <img src={address} className="w-[200px]"></img>
+                </div>
+              </div>
+            </div>
+            <button
+              onClick={closeAtmModal}
+              className="absolute top-[-20px] md:right-[-35px] right-[-20px] bg-white border border-gray-300 rounded-full h-8 w-8 flex justify-center items-center"
+            >
+              <span className="text-black text-xl">×</span>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
