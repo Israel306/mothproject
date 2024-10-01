@@ -9,6 +9,7 @@ import NextPage from "./components/Nextpage";
 import TransactionList from "./components/TransactionList";
 import SecondCard from "./components/SecondCard";
 import Cards from "./components/Cards";
+import Profile from "./components/Profile";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="transaction-list" element={<TransactionList />} />
         <Route path="cards" element={<Cards />} />
         <Route path="second-card" element={<SecondCard />} />
+        <Route path="profile" element={<Profile />} />
       </Routes>
     </Router>
   );

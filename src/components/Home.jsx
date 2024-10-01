@@ -624,7 +624,7 @@ export default function Home() {
 
                   {/* Display Exchange Rate */}
                   <div className="text-black text-center text-sm mb-6">
-                    <p>
+                    <p className="text-sm">
                       Exchange Rate: ₦
                       {exchangeRates[selectedCurrency].toLocaleString()} ={" "}
                       {selectedCurrency}

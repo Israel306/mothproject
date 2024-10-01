@@ -17,6 +17,7 @@ import atm from "/src/assets/atm.png";
 import mothcoin from "/src/assets/mothcoin.png";
 import googleplay from "/src/assets/googleplay.svg";
 import appstore from "/src/assets/appstore.svg";
+import Profile from "../../../components/Profile";
 
 function Dashboard() {
   const location = useLocation();
@@ -26,6 +27,7 @@ function Dashboard() {
   const [isAtmModalOpen, setIsAtmModalOpen] = useState(false);
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false); // Added missing state for 'isRequestModalOpen'
   const [step, setStep] = useState(1);
+  const [showAtmImage, setShowAtmImage] = useState(false);
 
   // Function to open the ATM modal
   const openAtmModal = () => {
@@ -223,14 +225,58 @@ function Dashboard() {
             <h2 className="text-black text-2xl text-center mb-5 font-bold">
               Find ATM
             </h2>
-            <div className="md:p-8 p-3 ">
-              <div className="mt-6 relative">
-                <img className="w-full" src={atm1} alt="ATM Modal Image" />
-                <div className="inset-0 absolute flex justify-end">
-                  <img src={address} className="w-[200px]"></img>
+            <div className="mt-4">
+              {step === 1 && (
+                <div>
+                  {/* Locate Nearest ATM Button */}
+                  <div
+                    className="flex items-center gap-2 p-2 rounded-2xl bg-[#EDEDED]"
+                    onClick={() => setShowAtmImage(true)} // Show image on click
+                  >
+                    <img src={atm1} className="w-10 h-10" alt="ATM" />
+                    <p>Locate Nearest ATM</p>
+                  </div>
+
+                  {/* Address Button */}
+                  <div
+                    className="flex items-center gap-2 p-2 rounded-2xl bg-[#EDEDED] mt-5"
+                    onClick={() => {
+                      setStep(2);
+                      setShowAtmImage(false); // Hide image if navigating to next step
+                    }}
+                  >
+                    <img src={address} className="w-10 h-10" alt="Address" />
+                    <p>Address</p>
+                  </div>
+
+                  {/* Image Display Section */}
+                  {showAtmImage && (
+                    <div className="mt-5 h-full">
+                      {/* Replace 'sampleImage' with your own image source */}
+                      <img
+                        src={atm1}
+                        alt="Nearest ATM"
+                        className="w-full h-64 object-cover rounded-xl"
+                      />
+                    </div>
+                  )}
                 </div>
-              </div>
+              )}
+
+              {step === 2 && (
+                <div>
+                  <h3>Address</h3>
+                  <input
+                    className="w-full p-3 mt-3 rounded-xl border-[1px]"
+                    placeholder="Type your address"
+                  />
+                  <button className="bg-black text-white w-full py-3 mt-5 rounded-xl">
+                    Find
+                  </button>
+                </div>
+              )}
             </div>
+
             <button
               onClick={closeAtmModal}
               className="absolute top-[-20px] md:right-[-35px] right-[-20px] bg-white border border-gray-300 rounded-full h-8 w-8 flex justify-center items-center"
