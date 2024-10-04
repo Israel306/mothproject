@@ -70,7 +70,6 @@ const Profile = () => {
           content="Have any issue? Reach out to our team"
           onClick={openProfileModal}
         />
-
         <Card1
           icon={help}
           icon2={arror}
@@ -78,7 +77,6 @@ const Profile = () => {
           content="Have any issue? Reach out to our team"
         />
         <Card1 icon={security} text="Security" icon2={arror} />
-
         <Link to="/newp" state={{ activeMenu: "Profile" }}>
           <Card1 icon={faq} text="FAQs" icon2={arror} onClick={openFaqModal} />
         </Link>

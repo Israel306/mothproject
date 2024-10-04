@@ -14,11 +14,12 @@ function SliderHero() {
     autoplaySpeed: 3000,
     dots: true,
     dotsClass: "slick-dots custom-dots",
+
     // customPaging: (i) => <div className="custom-dot" />,
   };
 
   return (
-    <div className="bg-black h-screen relative">
+    <div className="bg-black h-screen relative ">
       <img src={logo} alt="Logo" className="absolute top-5 left-5 z-10 w-16" />
       <Slider {...settings}>
         <div>
