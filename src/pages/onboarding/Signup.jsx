@@ -166,8 +166,21 @@ export default function Signup() {
                       className="text-black text-center text-[10px]"
                     >
                       I agree to the{" "}
-                      <span className="text-[#005BFE]">Terms of Service</span>{" "}
-                      and <span className="text-[#005BFE]">Privacy Policy</span>
+                      <a
+                        href="https://drive.google.com/file/d/1tf-O8xDciw-ZTCHZL1eqI1GYfjB6jz7Q/view?usp=drive_link"
+                        rel="noopener noreferrer"
+                        className="text-[#005BFE]"
+                      >
+                        Terms of Service
+                      </a>{" "}
+                      and{" "}
+                      <a
+                        href="https://drive.google.com/file/d/1tn13Tzj-6WLwdewoktzpjbJUNU-cas8t/view?usp=sharing"
+                        rel="noopener noreferrer"
+                        className="text-[#005BFE]"
+                      >
+                        Privacy Policy
+                      </a>
                     </label>
                   </div>
 

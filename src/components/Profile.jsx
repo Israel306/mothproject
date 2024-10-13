@@ -81,7 +81,7 @@ const Profile = () => {
           <Card1 icon={faq} text="FAQs" icon2={arror} onClick={openFaqModal} />
         </Link>
         <Card1 icon={privacy} text="Privacy Policy" icon2={arror} />
-        <Card1 icon={newdelete} text="Edit Profile" icon2={arror} />
+        <Card1 icon={newdelete} text="Delete Account" icon2={arror} />
       </div>
 
       {/* Modal rendering */}

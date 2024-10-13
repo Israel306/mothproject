@@ -67,7 +67,7 @@ export default function CardDetails() {
           className="bg-[#007AFF] text-white rounded-full p-2 px-4"
           onClick={openTopUpModal}
         >
-          <p className="text-[12px]">Top Up +</p>
+          <p className="text-[12px]">Moth Up +</p>
         </button>
       </div>
       <div className="flex items-center mt-5">
