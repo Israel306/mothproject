@@ -154,8 +154,8 @@ const Cards = () => {
 
   const countries = [
     { code: "US", name: "United States Dollar", flag: "🇺🇸", amount: "500" },
-    { code: "NG", name: "Nigeria Naira", flag: "🇳🇬" },
-    { code: "CA", name: "Canada Canadian Dollar", flag: "🇨🇦" },
+
+    { code: "CA", name: " Canadian Dollar", flag: "🇨🇦" },
     { code: "UK", name: "United Kingdom Pounds", flag: "🇬🇧" },
   ];
 
