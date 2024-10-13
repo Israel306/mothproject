@@ -26,9 +26,9 @@ export default function AccordionItem({
         <span className="text-sm leading-[1.5] font-bold">{title}</span>
         <span className="text-sm font-medium">
           {isOpen ? (
-            <RiArrowDropDownLine color="#A22228" />
+            <RiArrowDropDownLine color="#6C6C70" />
           ) : (
-            <RiArrowDropDownLine color="#A22228" />
+            <RiArrowDropDownLine color="#6C6C70" />
           )}
         </span>
       </div>

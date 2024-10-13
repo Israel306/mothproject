@@ -144,9 +144,9 @@ export default function Home() {
   };
 
   const exchangeRates = {
-    USD: 1600, // ₦1600 = $1.00
-    EUR: 900, // Example: ₦900 = €1.00
-    GBP: 1000, // Example: ₦1000 = £1.00
+    USD: 0.77, // ₦1600 = $1.00
+
+    GBP: 0.77, // Example: ₦1000 = £1.00
     CAD: 600, // Example: ₦600 = C$1.00
     // Add more currencies as needed
   };
@@ -154,7 +154,7 @@ export default function Home() {
   // Define the flags or country codes for each currency
   const flags = {
     USD: "🇺🇸",
-    EUR: "🇪🇺",
+
     GBP: "🇬🇧",
     CAD: "🇨🇦",
     // Add flags for other currencies as needed
@@ -170,7 +170,7 @@ export default function Home() {
     { code: "US", name: "United States", flag: "🇺🇸", placeholder: "$ 50" },
     { code: "CA", name: "Canada", flag: "🇨🇦", placeholder: "$ 50" },
     { code: "UK", name: "United Kingdom", flag: "🇬🇧", placeholder: "£ 50" },
-    { code: "NIG", name: "Nigeria", flag: "🇳🇬", placeholder: "₦ 50" },
+
     // Add more countries as needed
   ];
 
@@ -584,7 +584,7 @@ export default function Home() {
             {step === 1 && (
               <>
                 <div className="p-6 max-w-md mx-auto rounded-md ">
-                  <h1 className="text-black text-center mb-6">Convert NGN</h1>
+                  <h1 className="text-black text-center mb-6">Convert</h1>
 
                   {/* Display Wallet Balance */}
                   <div className="text-center mb-6">
@@ -599,16 +599,17 @@ export default function Home() {
                       htmlFor="enter-amount"
                       className="text-sm text-gray-600"
                     >
-                      Enter Amount in NGN
+                      Enter Amount
                     </label>
                     <div className="border flex items-center p-2 rounded-xl">
                       {/* Dropdown for selecting NGN */}
                       <select
                         className="bg-transparent outline-none mr-2"
-                        value="NGN"
-                        disabled
+                        value=""
                       >
-                        <option value="NGN">🇳🇬 NGN</option>
+                        <option value="USD">🇺🇸 USD</option>
+                        <option value="GBP">🇬🇧 GBP</option>
+                        <option value="CAD">🇨🇦 CAD</option>
                       </select>
 
                       {/* Input field for NGN amount */}
@@ -616,7 +617,7 @@ export default function Home() {
                         type="number"
                         value={ngnAmount}
                         onChange={handleConvert}
-                        placeholder="Enter NGN amount"
+                        placeholder="Enter amount"
                         className="w-full p-2 outline-none border-l "
                       />
                     </div>
@@ -625,7 +626,7 @@ export default function Home() {
                   {/* Display Exchange Rate */}
                   <div className="text-black text-center text-sm mb-6">
                     <p className="text-sm">
-                      Exchange Rate: ₦
+                      Exchange Rate:$
                       {exchangeRates[selectedCurrency].toLocaleString()} ={" "}
                       {selectedCurrency}
                     </p>

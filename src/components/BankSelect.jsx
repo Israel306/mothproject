@@ -34,8 +34,9 @@ const BankSelect = () => {
         id="enter-amount"
         className="bg-transparent w-full text-[16px] font-medium p-3 border border-[#CCCCCC] rounded-xl"
         onChange={handleChange}
+        defaultValue="" // Use defaultValue for the initial selection
       >
-        <option value="" disabled selected>
+        <option value="" disabled>
           Select a Bank
         </option>
         {bankList.length > 0 ? (
@@ -45,11 +46,20 @@ const BankSelect = () => {
             </option>
           ))
         ) : (
-          <option value="" disabled>
-            Loading banks...
-          </option>
+          <>
+            <option value="Wells Fargo">Wells Fargo</option>
+            <option value="Chase Bank">Chase Bank</option>
+            <option value="Bank of America">Bank of America</option>
+            <option value="Bank of America">TD Bank</option>
+            <option value="Bank of America">Citi Bank</option>
+            <option value="Bank of America">U.S Bank</option>
+            <option value="Bank of America">PNC</option>
+            <option value="Bank of America">Capital One</option>
+            <option value="Bank of America">Moth Wallet</option>
+          </>
         )}
       </select>
+
       {selectedBank && (
         <div className="mt-4 flex items-center">
           <img

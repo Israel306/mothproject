@@ -7,8 +7,8 @@ import Flag from "react-world-flags"; // Assuming you have a flag component for 
 
 // Example country data, replace this with actual data if necessary
 const countries = [
-  { label: "Nigeria", value: "+234", flag: "NG" },
   { label: "United States", value: "+1", flag: "US" },
+  { label: "United Kingdom", value: "+44" },
 ];
 
 export default function Acctsetup() {
@@ -173,6 +173,7 @@ export default function Acctsetup() {
                   </option>
                   <option value="male">Male</option>
                   <option value="female">Female</option>
+                  <option value="female">Transgender</option>
                   <option value="prefer not to say">Prefer Not To Say</option>
                 </select>
               </div>
@@ -204,9 +205,11 @@ export default function Acctsetup() {
                   <option value="" disabled selected>
                     Reasons
                   </option>
+                  <option value="receive-payments">ATM use</option>
                   <option value="receive-payments">
-                    Receive International Payments
+                    Sending money to family and friends
                   </option>
+                  <option value="receive-payments">Receiving payments</option>
                 </select>
               </div>
             </form>

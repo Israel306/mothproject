@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import TransactionItem from "../components/TransactionItem";
 import { FaSearch } from "react-icons/fa"; // Make sure to install react-icons
@@ -22,6 +22,8 @@ const Profile = () => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isFaqModalOpen, setIsFaqModalOpen] = useState(false);
   const [curOpen, setCurOpen] = useState(0);
+  const [profileImage, setProfileImage] = useState(newprofile); // Manage the uploaded image state.
+  const fileInputRef = useRef(null); // Create a reference for the input element.
 
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
@@ -45,6 +47,19 @@ const Profile = () => {
     setIsFaqModalOpen(false);
   };
 
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => setProfileImage(e.target.result); // Set the uploaded image.
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current.click(); // Programmatically click the file input.
+  };
+
   return (
     <div className="">
       <div className="flex flex-col w-full">
@@ -52,22 +67,34 @@ const Profile = () => {
         <div className="border-[1px] border-[#E1E1E1] mt-5 mb-10"></div>
       </div>
       <div className="flex items-center gap-3">
-        <div>
-          <img src={newprofile} alt="Profile" />
+        <div onClick={triggerFileInput} className="cursor-pointer">
+          <img
+            src={profileImage}
+            alt="Profile"
+            className="w-16 h-16 rounded-full object-cover"
+          />
         </div>
 
         <div>
           <h2 className="mb-1">Matthew Boye</h2>
           <p className="text-sm text-[grey]">@mattboye</p>
         </div>
-      </div>
 
+        {/* Hidden file input for uploading the profile image */}
+        <input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          style={{ display: "none" }}
+          onChange={handleImageUpload}
+        />
+      </div>
       <div className="mt-10 grid md:grid-cols-2 grid-cols-1 md:gap-3">
         <Card1
           icon={edit}
           icon2={arror}
           text="Edit Profile"
-          content="Have any issue? Reach out to our team"
+          content=""
           onClick={openProfileModal}
         />
         <Card1
@@ -186,10 +213,10 @@ const Profile = () => {
             </div>
 
             <h1 className="text-center text-2xl mb-8">
-              Frequently Asked Questions (FAQs){" "}
+              Frequently Asked Questions (FAQs)
             </h1>
 
-            <div className="flex  items-center border-[0.5px] border-black rounded-lg p-1 mb-10">
+            <div className="flex items-center border-[0.5px] border-black rounded-lg p-1 mb-10">
               <FaSearch className="text-black ml-2" />
               <input
                 type="text"
@@ -200,7 +227,8 @@ const Profile = () => {
               />
             </div>
 
-            <div className=" container-w text-">
+            {/* Scrollable container for FAQ items */}
+            <div className="max-h-60 overflow-y-auto">
               {data.map((faq, i) => (
                 <AccordionItem
                   curOpen={curOpen}
@@ -209,7 +237,7 @@ const Profile = () => {
                   num={i}
                   key={i}
                 >
-                  <p className="text-sm text-[grey]">{faq.answer}</p>
+                  <div className="text-sm text-[grey]">{faq.answer}</div>
                 </AccordionItem>
               ))}
             </div>
@@ -224,30 +252,140 @@ export default Profile;
 
 const data = [
   {
-    question: "How do i send money?",
-    answer:
-      "To send money with Moth, you’ll first need to sign up. We’ll ask for your email address, and you’ll create a password. We’ll also need to verify you before you are able to send money. Check what information we need and how long verification takes here..",
+    question: "Can I send a payment with MOTH?",
+    answer: (
+      <>
+        <h4 className="text-sm mb-2">Here’s how to send funds with MOTH:</h4>
+        <p className="text-sm">Tap "Send" on the home screen</p>
+        <ol class="list-decimal list-inside">
+          <li>Enter an amount</li>
+          <li>Select where the funds will be sent from</li>
+          <li>Search and add the person you want to pay</li>
+          <li>Give a reason for payment, press next</li>
+          <li>Carefully review the transaction slip details, press next</li>
+          <li>Enter your MOTH pin.</li>
+          <li>The funds are on their way!</li>
+        </ol>
+      </>
+    ),
   },
   {
-    question: "Fees for sending money?",
-    answer: <></>,
-  },
-  {
-    question: "How do i change my password?",
-    answer: "",
-  },
-  {
-    question: "How do i convert my money?",
-    answer: "",
+    question: "Can I request a payment with MOTH?",
+    answer: (
+      <>
+        <h4 className="text-sm mb-2">Here’s how to request funds with MOTH:</h4>
+        <p className="text-sm">Tap "Swap" on the home screen</p>
+        <ol class="list-decimal list-inside">
+          <li>
+            Select the type of currency you would like to convert from and the
+            amount.
+          </li>
+          <li>
+            {" "}
+            Select the type of currency you like the funds to be converted into,
+            press next.
+          </li>
+          <li>The transfer has begun!</li>
+        </ol>
+      </>
+    ),
   },
 
   {
-    question: "Where can i use my Moth card?",
-    answer: "",
+    question: "Can I swap currencies with MOTH?",
+    answer: (
+      <>
+        <h4 className="text-sm mb-2">Here’s how to swap funds with MOTH:</h4>
+        <p className="text-sm">Tap "Request" on the home screen</p>
+        <ol class="list-decimal list-inside">
+          <li>Copy your customized MOTH link.</li>
+          <li>Share the link with your employer, friend and/or sender</li>
+        </ol>
+      </>
+    ),
+  },
+  {
+    question: "Can I withdraw currencies with MOTH?",
+    answer: (
+      <>
+        <h4 className="text-sm mb-2">
+          Here’s how to withdraw funds with MOTH:
+        </h4>
+        <p className="text-sm">Tap "Withdraw" on the home screen</p>
+        <ol class="list-decimal list-inside">
+          <li>Select Via QR Code account</li>
+          <li>
+            Select the MOTH wallet (please make sure the currency is accepted at
+            the ATM)
+          </li>
+          <li>Enter an amount, press next</li>
+          <li>Confirm your details, press next</li>
+          <li>
+            Present your QR Code and Reference Number to the ATM to continue
+            with your transaction.
+          </li>
+        </ol>
+      </>
+    ),
   },
 
   {
-    question: "How do i make withdrawals on my Moth card?",
-    answer: "",
+    question: "How much will it cost per ATM withdrawal?",
+    answer: (
+      <>
+        <h4 className="text-sm mb-2">
+          Currently, it costs only $2 per transaction.
+        </h4>
+      </>
+    ),
+  },
+
+  {
+    question: "Are there premium plans for frequent customers or families?",
+    answer: (
+      <>
+        <h4 className="text-sm mb-2">
+          Yes! You have the opportunity to sign up for individual or family
+          plans at $9.99 and $19.99 for unlimited ATM withdrawals.
+        </h4>
+      </>
+    ),
+  },
+
+  {
+    question: "Can I create a virtual MOTH card?",
+    answer: (
+      <>
+        <h4 className="text-sm mb-2">Tap "Card" on the three-lined sidebar</h4>
+
+        <ol class="list-decimal list-inside">
+          <li> Read the fees that will apply to your card, press next</li>
+          <li>Select which wallet/currency you would like the card to be</li>
+          <li> Enter an amount, press next</li>
+          <li>The card is created and ready to use!</li>
+        </ol>
+      </>
+    ),
+  },
+
+  {
+    question: "Can I customize my profile?",
+    answer: (
+      <>
+        <h4 className="text-sm mb-2">
+          Tap "Profile" on the three-lined sidebar
+        </h4>
+
+        <ol class="list-decimal list-inside">
+          <li> Add a profile picture</li>
+          <li>Select edit profile</li>
+          <li>
+            {" "}
+            Change your name, username, email address and/or phone number.
+          </li>
+          <li>Save your changes.</li>
+        </ol>
+      </>
+    ),
   },
 ];

@@ -35,7 +35,7 @@ export default function CardDetails() {
     { code: "US", name: "United States", flag: "🇺🇸", placeholder: "$ 50" },
     { code: "CA", name: "Canada", flag: "🇨🇦", placeholder: "$ 50" },
     { code: "UK", name: "United Kingdom", flag: "🇬🇧", placeholder: "£ 50" },
-    { code: "NIG", name: "Nigeria", flag: "🇳🇬", placeholder: "₦ 50" },
+
     // Add more countries as needed
   ];
 
@@ -145,7 +145,14 @@ export default function CardDetails() {
                           <option value="" disabled>
                             Select Payment Method
                           </option>
-                          <option value="Bank Transfer">Bank Transfer</option>
+                          <option value="Bank Transfer">Wells Fargo</option>
+                          <option value="Bank Transfer">Chase</option>
+                          <option value="Bank Transfer">Bank Of America</option>
+                          <option value="Bank Transfer">TD Bank</option>
+                          <option value="Bank Transfer">Citi Bank</option>
+                          <option value="Bank Transfer">U.S Bank</option>
+                          <option value="Bank Transfer">PNC</option>
+                          <option value="Bank Transfer">Capital One</option>
                         </select>
                       </div>
                     </div>

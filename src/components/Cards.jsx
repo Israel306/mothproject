@@ -207,7 +207,7 @@ const Cards = () => {
                 </div>
                 <div>
                   <p className="text-[#6C6C70] text-[13px]">Transaction Fees</p>
-                  <p className="font-bold">$0</p>
+                  <p className="font-bold">$2</p>
                 </div>
               </div>
               <div className="flex items-center gap-5 w-full">
