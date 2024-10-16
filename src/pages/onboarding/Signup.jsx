@@ -8,10 +8,10 @@ import logo from "/src/assets/logo.svg";
 
 // Example country data, replace with actual data if necessary
 const countries = [
-  { label: "Nigeria", value: "+234", flag: "NG" },
   { label: "United States", value: "+1", flag: "US" },
+  { label: "United Kingdom", value: "+44", flag: "" },
+  { label: "Canada", value: "+1" },
 ];
-
 export default function Signup() {
   const navigate = useNavigate();
 

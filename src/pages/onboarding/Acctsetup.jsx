@@ -9,6 +9,7 @@ import Flag from "react-world-flags"; // Assuming you have a flag component for 
 const countries = [
   { label: "United States", value: "+1", flag: "US" },
   { label: "United Kingdom", value: "+44" },
+  { label: "Canada", value: "+1" },
 ];
 
 export default function Acctsetup() {
